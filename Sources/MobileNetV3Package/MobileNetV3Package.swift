@@ -1,12 +1,12 @@
+import Foundation
+
 public struct MobileNetV3Package {
 
     public init() {
     }
 
-    public func predict() -> Float{
-        Task {
-            try? await Task.sleep(nanoseconds: 10_000_000)
-        }
-        return 33.33
+    public func predict() -> Int {
+        Thread.sleep(until: Date().addingTimeInterval(0.01))
+        return 245
     }
 }
