@@ -12,7 +12,7 @@ public struct MobileNetV3Package {
         }
     }
     
-    public func predict2(input: UIImage?) -> Int? {
+    public func predict(input: UIImage?) -> Int? {
         
         // Convert the UIImage into a CGImage
         guard let cgImage = input?.cgImage else {
