@@ -111,8 +111,6 @@ public struct MobileNetV3Package {
                 }
             }
             
-            print("arg max : \(max_arg)")
-            
             return Int(max_arg)
             
         }
