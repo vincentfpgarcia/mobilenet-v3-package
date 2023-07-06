@@ -20,16 +20,16 @@ public struct MobileNetV3Package {
         }
         
         // Create the model input
-        let model_input = try! FooInput(my_inputWith: cgImage)
+        let modelInput = try! FooInput(my_inputWith: cgImage)
         
         // Inference options
         let options = MLPredictionOptions()
         
         // Inference
-        let outFeatures = try! model?.prediction(from: model_input, options: options)
-        let output = FooOutput(features: outFeatures!).my_output
+        let modelOutput = try! model?.prediction(from: modelInput, options: options)
+        let output = FooOutput(features: modelOutput!).my_output
 
-        // Argmax
+        // Argmax computation
         var max_val = -1000.0
         var max_arg = -1
         for i in 0..<1000 {
@@ -42,5 +42,4 @@ public struct MobileNetV3Package {
         
         return Int(max_arg)
     }
-    
 }
