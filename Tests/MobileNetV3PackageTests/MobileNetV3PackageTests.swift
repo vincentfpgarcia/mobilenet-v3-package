@@ -17,6 +17,6 @@ func createDummyUIImage() -> UIImage? {
 final class MobileNetV3PackageTests: XCTestCase {
     func testExample() {
         let input = createDummyUIImage()
-        XCTAssertGreaterThan(MobileNetV3Package().predict(input: input)!, -1)
+        XCTAssertNotEqual(MobileNetV3Package().predict(input: input)!, "")
     }
 }

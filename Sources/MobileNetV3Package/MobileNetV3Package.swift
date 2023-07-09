@@ -12,7 +12,7 @@ public struct MobileNetV3Package {
         }
     }
     
-    public func predict(input: UIImage?) -> Int? {
+    public func predict(input: UIImage?) -> String? {
         
         // Convert the UIImage into a CGImage
         guard let cgImage = input?.cgImage else {
@@ -39,7 +39,8 @@ public struct MobileNetV3Package {
                 max_arg = i
             }
         }
-        
-        return Int(max_arg)
+
+        // Return the label of the most probable class
+        return labels[max_arg]
     }
 }
