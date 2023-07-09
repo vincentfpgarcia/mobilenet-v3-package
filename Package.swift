@@ -24,7 +24,7 @@ let package = Package(
         .target(
             name: "MobileNetV3Package",
             dependencies: [],
-            resources: [.copy("Foo.mlmodelc")]),
+            resources: [.copy("Model.mlmodelc")]),
         .testTarget(
             name: "MobileNetV3PackageTests",
             dependencies: ["MobileNetV3Package"]),
