@@ -1,5 +1,5 @@
 //
-// Model.swift
+// MobileNetV3Model.swift
 //
 // This file was automatically generated and should not be edited.
 //
@@ -9,7 +9,7 @@ import CoreML
 
 /// Model Prediction Input Type
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-class ModelInput : MLFeatureProvider {
+class MobileNetV3ModelInput : MLFeatureProvider {
 
     /// my_input as color (kCVPixelFormatType_32BGRA) image buffer, 224 pixels wide by 224 pixels high
     var my_input: CVPixelBuffer
@@ -52,7 +52,7 @@ class ModelInput : MLFeatureProvider {
 
 /// Model Prediction Output Type
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-class ModelOutput : MLFeatureProvider {
+class MobileNetV3ModelOutput : MLFeatureProvider {
 
     /// Source provided by CoreML
     private let provider : MLFeatureProvider
@@ -88,20 +88,20 @@ class ModelOutput : MLFeatureProvider {
 
 /// Class for model loading and prediction
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-class Model {
+class MobileNetV3Model {
     let model: MLModel
 
     /// URL of model assuming it was installed in the same bundle as this class
     class var urlOfModelInThisBundle : URL {
         let bundle = Bundle(for: self)
-        return bundle.url(forResource: "Model", withExtension:"mlmodelc")!
+        return bundle.url(forResource: "MobileNetV3Model", withExtension:"mlmodelc")!
     }
 
     /**
-        Construct Model instance with an existing MLModel object.
+        Construct MobileNetV3Model instance with an existing MLModel object.
 
-        Usually the application does not use this initializer unless it makes a subclass of Model.
-        Such application may want to use `MLModel(contentsOfURL:configuration:)` and `Model.urlOfModelInThisBundle` to create a MLModel object to pass-in.
+        Usually the application does not use this initializer unless it makes a subclass of MobileNetV3Model.
+        Such application may want to use `MLModel(contentsOfURL:configuration:)` and `MobileNetV3Model.urlOfModelInThisBundle` to create a MLModel object to pass-in.
 
         - parameters:
           - model: MLModel object
@@ -111,7 +111,7 @@ class Model {
     }
 
     /**
-        Construct Model instance by automatically loading the model from the app's bundle.
+        Construct MobileNetV3Model instance by automatically loading the model from the app's bundle.
     */
     @available(*, deprecated, message: "Use init(configuration:) instead and handle errors appropriately.")
     convenience init() {
@@ -131,7 +131,7 @@ class Model {
     }
 
     /**
-        Construct Model instance with explicit path to mlmodelc file
+        Construct MobileNetV3Model instance with explicit path to mlmodelc file
         - parameters:
            - modelURL: the file url of the model
 
@@ -155,7 +155,7 @@ class Model {
     }
 
     /**
-        Construct Model instance asynchronously with optional configuration.
+        Construct MobileNetV3Model instance asynchronously with optional configuration.
 
         Model loading may take time when the model content is not immediately available (e.g. encrypted model). Use this factory method especially when the caller is on the main thread.
 
@@ -164,12 +164,12 @@ class Model {
           - handler: the completion handler to be called when the model loading completes successfully or unsuccessfully
     */
     @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
-    class func load(configuration: MLModelConfiguration = MLModelConfiguration(), completionHandler handler: @escaping (Swift.Result<Model, Error>) -> Void) {
+    class func load(configuration: MLModelConfiguration = MLModelConfiguration(), completionHandler handler: @escaping (Swift.Result<MobileNetV3Model, Error>) -> Void) {
         return self.load(contentsOf: self.urlOfModelInThisBundle, configuration: configuration, completionHandler: handler)
     }
 
     /**
-        Construct Model instance asynchronously with optional configuration.
+        Construct MobileNetV3Model instance asynchronously with optional configuration.
 
         Model loading may take time when the model content is not immediately available (e.g. encrypted model). Use this factory method especially when the caller is on the main thread.
 
@@ -177,12 +177,12 @@ class Model {
           - configuration: the desired model configuration
     */
     @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-    class func load(configuration: MLModelConfiguration = MLModelConfiguration()) async throws -> Model {
+    class func load(configuration: MLModelConfiguration = MLModelConfiguration()) async throws -> MobileNetV3Model {
         return try await self.load(contentsOf: self.urlOfModelInThisBundle, configuration: configuration)
     }
 
     /**
-        Construct Model instance asynchronously with URL of the .mlmodelc directory with optional configuration.
+        Construct MobileNetV3Model instance asynchronously with URL of the .mlmodelc directory with optional configuration.
 
         Model loading may take time when the model content is not immediately available (e.g. encrypted model). Use this factory method especially when the caller is on the main thread.
 
@@ -192,19 +192,19 @@ class Model {
           - handler: the completion handler to be called when the model loading completes successfully or unsuccessfully
     */
     @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
-    class func load(contentsOf modelURL: URL, configuration: MLModelConfiguration = MLModelConfiguration(), completionHandler handler: @escaping (Swift.Result<Model, Error>) -> Void) {
+    class func load(contentsOf modelURL: URL, configuration: MLModelConfiguration = MLModelConfiguration(), completionHandler handler: @escaping (Swift.Result<MobileNetV3Model, Error>) -> Void) {
         MLModel.load(contentsOf: modelURL, configuration: configuration) { result in
             switch result {
             case .failure(let error):
                 handler(.failure(error))
             case .success(let model):
-                handler(.success(Model(model: model)))
+                handler(.success(MobileNetV3Model(model: model)))
             }
         }
     }
 
     /**
-        Construct Model instance asynchronously with URL of the .mlmodelc directory with optional configuration.
+        Construct MobileNetV3Model instance asynchronously with URL of the .mlmodelc directory with optional configuration.
 
         Model loading may take time when the model content is not immediately available (e.g. encrypted model). Use this factory method especially when the caller is on the main thread.
 
@@ -213,22 +213,22 @@ class Model {
           - configuration: the desired model configuration
     */
     @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-    class func load(contentsOf modelURL: URL, configuration: MLModelConfiguration = MLModelConfiguration()) async throws -> Model {
+    class func load(contentsOf modelURL: URL, configuration: MLModelConfiguration = MLModelConfiguration()) async throws -> MobileNetV3Model {
         let model = try await MLModel.load(contentsOf: modelURL, configuration: configuration)
-        return Model(model: model)
+        return MobileNetV3Model(model: model)
     }
 
     /**
         Make a prediction using the structured interface
 
         - parameters:
-           - input: the input to the prediction as ModelInput
+           - input: the input to the prediction as MobileNetV3ModelInput
 
         - throws: an NSError object that describes the problem
 
-        - returns: the result of the prediction as ModelOutput
+        - returns: the result of the prediction as MobileNetV3ModelOutput
     */
-    func prediction(input: ModelInput) throws -> ModelOutput {
+    func prediction(input: MobileNetV3ModelInput) throws -> MobileNetV3ModelOutput {
         return try self.prediction(input: input, options: MLPredictionOptions())
     }
 
@@ -236,16 +236,16 @@ class Model {
         Make a prediction using the structured interface
 
         - parameters:
-           - input: the input to the prediction as ModelInput
+           - input: the input to the prediction as MobileNetV3ModelInput
            - options: prediction options 
 
         - throws: an NSError object that describes the problem
 
-        - returns: the result of the prediction as ModelOutput
+        - returns: the result of the prediction as MobileNetV3ModelOutput
     */
-    func prediction(input: ModelInput, options: MLPredictionOptions) throws -> ModelOutput {
+    func prediction(input: MobileNetV3ModelInput, options: MLPredictionOptions) throws -> MobileNetV3ModelOutput {
         let outFeatures = try model.prediction(from: input, options:options)
-        return ModelOutput(features: outFeatures)
+        return MobileNetV3ModelOutput(features: outFeatures)
     }
 
     /**
@@ -256,10 +256,10 @@ class Model {
 
         - throws: an NSError object that describes the problem
 
-        - returns: the result of the prediction as ModelOutput
+        - returns: the result of the prediction as MobileNetV3ModelOutput
     */
-    func prediction(my_input: CVPixelBuffer) throws -> ModelOutput {
-        let input_ = ModelInput(my_input: my_input)
+    func prediction(my_input: CVPixelBuffer) throws -> MobileNetV3ModelOutput {
+        let input_ = MobileNetV3ModelInput(my_input: my_input)
         return try self.prediction(input: input_)
     }
 
@@ -267,21 +267,21 @@ class Model {
         Make a batch prediction using the structured interface
 
         - parameters:
-           - inputs: the inputs to the prediction as [ModelInput]
+           - inputs: the inputs to the prediction as [MobileNetV3ModelInput]
            - options: prediction options 
 
         - throws: an NSError object that describes the problem
 
-        - returns: the result of the prediction as [ModelOutput]
+        - returns: the result of the prediction as [MobileNetV3ModelOutput]
     */
-    func predictions(inputs: [ModelInput], options: MLPredictionOptions = MLPredictionOptions()) throws -> [ModelOutput] {
+    func predictions(inputs: [MobileNetV3ModelInput], options: MLPredictionOptions = MLPredictionOptions()) throws -> [MobileNetV3ModelOutput] {
         let batchIn = MLArrayBatchProvider(array: inputs)
         let batchOut = try model.predictions(from: batchIn, options: options)
-        var results : [ModelOutput] = []
+        var results : [MobileNetV3ModelOutput] = []
         results.reserveCapacity(inputs.count)
         for i in 0..<batchOut.count {
             let outProvider = batchOut.features(at: i)
-            let result =  ModelOutput(features: outProvider)
+            let result =  MobileNetV3ModelOutput(features: outProvider)
             results.append(result)
         }
         return results
