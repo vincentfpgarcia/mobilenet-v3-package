@@ -1,6 +1,7 @@
 import CoreML
 import Foundation
 import UIKit
+import os
 
 public struct MobileNetV3Package {
     
@@ -13,19 +14,24 @@ public struct MobileNetV3Package {
     }
     
     public func predict(input: UIImage?) -> String? {
+
+        let logger = Logger()
         
         // Convert the UIImage into a CGImage
         guard let cgImage = input?.cgImage else {
+            logger.error("Could not convert the UIImage into a CGImage")
             return nil
         }
         
         // Create the model input
         guard let modelInput = try? MobileNetV3ModelInput(my_inputWith: cgImage) else {
+            logger.error("Could not create the model's input")
             return nil
         }
         
         // Inference
         guard let modelOutput = try? model!.prediction(input: modelInput).my_output else {
+            logger.error("Could not process the model's input")
             return nil
         }
 
@@ -41,6 +47,8 @@ public struct MobileNetV3Package {
         }
 
         // Return the label of the most probable class
-        return labels[max_arg]
+        let output = labels[max_arg]
+        logger.info("Class predicted: \(output)")
+        return output
     }
 }
