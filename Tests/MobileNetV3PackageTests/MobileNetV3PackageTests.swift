@@ -1,22 +1,27 @@
 import XCTest
+import os
 @testable import MobileNetV3Package
-
-
-func createDummyUIImage() -> UIImage? {
-    let size = CGFloat(224)
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(size, size), true, 0.0)
-    UIColor.white.set()
-    let rect = CGRectMake(0, 0, size, size)
-    UIRectFill(rect)
-    let image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-    return image
-}
-
 
 final class MobileNetV3PackageTests: XCTestCase {
     func testExample() {
-        let input = createDummyUIImage()
-        XCTAssertNotEqual(MobileNetV3Package().predict(input: input)!, "")
+
+        let logger = Logger()
+
+        guard let url = Bundle.module.url(forResource: "bulldog", withExtension: "jpg") else {
+            logger.error("Cannot access bulldog image")
+            return
+        }
+
+        guard let data = try? Data(contentsOf: url) else {
+            logger.error("Cannot create Data")
+            return
+        }
+
+        guard let input = UIImage(data: data) else {
+            logger.error("Cannot build UIImage from data")
+            return
+        }
+
+        XCTAssertEqual(MobileNetV3Package().predict(input: input)!, "French bulldog")
     }
 }
