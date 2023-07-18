@@ -20,10 +20,14 @@ public struct MobileNetV3Package {
         }
         
         // Create the model input
-        let modelInput = try! MobileNetV3ModelInput(my_inputWith: cgImage)
+        guard let modelInput = try? MobileNetV3ModelInput(my_inputWith: cgImage) else {
+            return nil
+        }
         
         // Inference
-        let modelOutput = try! model!.prediction(input: modelInput).my_output
+        guard let modelOutput = try? model!.prediction(input: modelInput).my_output else {
+            return nil
+        }
 
         // Argmax computation
         var max_val = -1000.0
