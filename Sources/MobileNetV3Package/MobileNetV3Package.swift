@@ -47,8 +47,6 @@ public struct MobileNetV3Package {
         }
 
         // Return the label of the most probable class
-        let output = labels[max_arg]
-        logger.info("Class predicted: \(output)")
-        return output
+        return labels[max_arg]
     }
 }
