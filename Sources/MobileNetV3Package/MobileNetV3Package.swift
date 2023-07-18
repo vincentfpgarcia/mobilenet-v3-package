@@ -4,11 +4,11 @@ import UIKit
 
 public struct MobileNetV3Package {
     
-    private var model: MLModel? = nil
+    private var model: MobileNetV3Model? = nil
     
     public init() {
         if let url = Bundle.module.url(forResource: "MobileNetV3Model", withExtension: "mlmodelc") {
-            self.model = try! MLModel(contentsOf: url, configuration: MLModelConfiguration())
+            self.model = try! MobileNetV3Model(contentsOf: url, configuration: MLModelConfiguration())
         }
     }
     
@@ -22,18 +22,14 @@ public struct MobileNetV3Package {
         // Create the model input
         let modelInput = try! MobileNetV3ModelInput(my_inputWith: cgImage)
         
-        // Inference options
-        let options = MLPredictionOptions()
-        
         // Inference
-        let modelOutput = try! model?.prediction(from: modelInput, options: options)
-        let output = MobileNetV3ModelOutput(features: modelOutput!).my_output
+        let modelOutput = try! model!.prediction(input: modelInput).my_output
 
         // Argmax computation
         var max_val = -1000.0
         var max_arg = -1
         for i in 0..<1000 {
-            let val = Double(truncating: output[i])
+            let val = Double(truncating: modelOutput[i])
             if val > max_val {
                 max_val = val
                 max_arg = i
