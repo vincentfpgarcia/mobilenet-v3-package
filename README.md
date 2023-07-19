@@ -25,7 +25,7 @@ import MobileNetV3Package
 Then, initialize the model:
 
 ```swift
-let model = MobileNetV3Package()
+let model = MobileNetV3Package()!
 ```
 
 ### Step 3: Use the model

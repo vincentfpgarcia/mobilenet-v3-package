@@ -22,6 +22,11 @@ final class MobileNetV3PackageTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(MobileNetV3Package().predict(input: input)!, "French bulldog")
+        guard let model = MobileNetV3Package() else {
+            logger.error("Cannot initialize the model")
+            return
+        }
+
+        XCTAssertEqual(model.predict(input: input)!, "French bulldog")
     }
 }

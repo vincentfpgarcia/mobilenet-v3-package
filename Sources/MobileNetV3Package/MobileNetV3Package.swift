@@ -6,11 +6,18 @@ import os
 public struct MobileNetV3Package {
     
     private var model: MobileNetV3Model? = nil
-    
-    public init() {
-        if let url = Bundle.module.url(forResource: "MobileNetV3Model", withExtension: "mlmodelc") {
-            self.model = try! MobileNetV3Model(contentsOf: url, configuration: MLModelConfiguration())
+
+    public init?() {
+
+        guard let url = Bundle.module.url(forResource: "MobileNetV3Model", withExtension: "mlmodelc") else {
+            return nil
         }
+
+        guard let model = try? MobileNetV3Model(contentsOf: url, configuration: MLModelConfiguration()) else {
+            return nil
+        }
+
+        self.model = model
     }
     
     public func predict(input: UIImage?) -> String? {
