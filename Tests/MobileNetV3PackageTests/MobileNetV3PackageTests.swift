@@ -27,6 +27,7 @@ final class MobileNetV3PackageTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(model.predict(input: input)!, "French bulldog")
+        let (label, probability) = model.predict(input: input)
+        XCTAssertEqual(label!, "French bulldog")
     }
 }

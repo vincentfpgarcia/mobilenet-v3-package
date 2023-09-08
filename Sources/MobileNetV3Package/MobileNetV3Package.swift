@@ -20,40 +20,49 @@ public struct MobileNetV3Package {
         self.model = model
     }
     
-    public func predict(input: UIImage?) -> String? {
+    public func predict(input: UIImage?) -> (label: String?, probability: Double?) {
 
         let logger = Logger()
         
         // Convert the UIImage into a CGImage
         guard let cgImage = input?.cgImage else {
             logger.error("Could not convert the UIImage into a CGImage")
-            return nil
+            return (nil, nil)
         }
         
         // Create the model input
         guard let modelInput = try? MobileNetV3ModelInput(my_inputWith: cgImage) else {
             logger.error("Could not create the model's input")
-            return nil
+            return (nil, nil)
         }
         
         // Inference
         guard let modelOutput = try? model!.prediction(input: modelInput).my_output else {
             logger.error("Could not process the model's input")
-            return nil
+            return (nil, nil)
         }
 
         // Argmax computation
-        var max_val = -1000.0
-        var max_arg = -1
+        var maxVal = -1000.0
+        var maxArg = -1
         for i in 0..<1000 {
             let val = Double(truncating: modelOutput[i])
-            if val > max_val {
-                max_val = val
-                max_arg = i
+            if val > maxVal {
+                maxVal = val
+                maxArg = i
             }
         }
 
-        // Return the label of the most probable class
-        return labels[max_arg]
+        // Get the associated label
+        let label = labels[maxArg]
+
+        // Compute the probability (softmax value)
+        var sumExp = 0.0
+        for i in 0..<1000 {
+            sumExp += exp(Double(truncating: modelOutput[i]))
+        }
+        let proba = exp(Double(truncating: modelOutput[maxArg])) / sumExp
+
+        return (label, proba)
     }
 }
