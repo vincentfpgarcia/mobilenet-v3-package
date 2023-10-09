@@ -7,13 +7,16 @@ public struct MobileNetV3Package {
     
     private var model: MobileNetV3Model? = nil
 
-    public init?() {
+    public init?(computeUnits: MLComputeUnits = MLComputeUnits.all) {
 
         guard let url = Bundle.module.url(forResource: "MobileNetV3Model", withExtension: "mlmodelc") else {
             return nil
         }
 
-        guard let model = try? MobileNetV3Model(contentsOf: url, configuration: MLModelConfiguration()) else {
+        let configuration = MLModelConfiguration()
+        configuration.computeUnits = computeUnits
+
+        guard let model = try? MobileNetV3Model(contentsOf: url, configuration: configuration) else {
             return nil
         }
 

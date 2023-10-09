@@ -22,7 +22,7 @@ final class MobileNetV3PackageTests: XCTestCase {
             return
         }
 
-        guard let model = MobileNetV3Package() else {
+        guard let model = MobileNetV3Package(computeUnits: .all) else {
             logger.error("Cannot initialize the model")
             return
         }
