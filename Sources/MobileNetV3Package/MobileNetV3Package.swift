@@ -60,13 +60,13 @@ private func getLabelAndProbability(mlArray: MLMultiArray) -> (label: String?, p
 
 public struct MobileNetV3Package {
     
-    private var model: MobileNetV3Model? = nil
+    private var model: MobileNetV3_MLP_NoQuantization? = nil
     private var logger = Logger()
 
     public init?(computeUnits: MLComputeUnits = MLComputeUnits.all) {
 
         // Get the URL of the CoreML model
-        guard let url = Bundle.module.url(forResource: "MobileNetV3Model", withExtension: "mlmodelc") else {
+        guard let url = Bundle.module.url(forResource: "MobileNetV3_MLP_NoQuantization", withExtension: "mlmodelc") else {
             logger.error("Could not find the CoreML model file")
             return nil
         }
@@ -76,7 +76,7 @@ public struct MobileNetV3Package {
         configuration.computeUnits = computeUnits
 
         // Load the CoreML model
-        guard let model = try? MobileNetV3Model(contentsOf: url, configuration: configuration) else {
+        guard let model = try? MobileNetV3_MLP_NoQuantization(contentsOf: url, configuration: configuration) else {
             logger.error("Could not create the CoreML model instance")
             return nil
         }
@@ -90,9 +90,9 @@ public struct MobileNetV3Package {
             logger.error("Could not convert the UIImage into a CGImage")
             return (nil, nil)
         }
-        
+
         // Create the model input
-        guard let modelInput = try? MobileNetV3ModelInput(my_inputWith: cgImage) else {
+        guard let modelInput = try? MobileNetV3_MLP_NoQuantizationInput(my_inputWith: cgImage) else {
             logger.error("Could not create the model's input")
             return (nil, nil)
         }
