@@ -3,6 +3,61 @@ import Foundation
 import UIKit
 import os
 
+
+private func getArgMax(array: MLMultiArray) -> Int {
+    var argMax = 0
+    var valMax = Double(truncating: array[0])
+    for i in 1..<array.count {
+        let val = Double(truncating: array[i])
+        if val > valMax {
+            argMax = i
+            valMax = val
+        }
+    }
+    return argMax
+}
+
+
+private func getProba(array: MLMultiArray, argMax: Int) -> Double {
+    var sumExp = 0.0
+    for i in 0..<array.count {
+        sumExp += exp(Double(truncating: array[i]))
+    }
+    let proba = exp(Double(truncating: array[argMax])) / sumExp
+    return proba
+}
+
+
+extension Array where Element: Comparable {
+    func argmax() -> Index? {
+        return indices.max(by: { self[$0] < self[$1] })
+    }
+}
+
+
+private func getLabelAndProbability(mlArray: MLMultiArray) -> (label: String?, probability: Double?) {
+    if let ptr = try? UnsafeBufferPointer<Float>(mlArray) {
+        let array = Array(ptr)
+
+        // Find arg max
+        guard let argMax = array.argmax() else {
+            return (nil, nil)
+        }
+
+        // Get the corresponding label
+        let label = labels[argMax]
+
+        // Compute probability
+        let arrayExp = array.map{ exp(Double($0)) }
+        let arrayExpSum = arrayExp.reduce(0, +)
+        let proba = arrayExp[argMax] / arrayExpSum
+
+        return (label, proba)
+    }
+    return (nil, nil)
+}
+
+
 public struct MobileNetV3Package {
     
     private var model: MobileNetV3Model? = nil
@@ -48,30 +103,17 @@ public struct MobileNetV3Package {
             return (nil, nil)
         }
 
-        // Number of classes
-        let nbClasses = modelOutput.count
+        return getLabelAndProbability(mlArray: modelOutput)
 
-        // Argmax computation
-        var maxArg = 0
-        var maxVal = Double(truncating: modelOutput[0])
-        for i in 1..<nbClasses {
-            let val = Double(truncating: modelOutput[i])
-            if val > maxVal {
-                maxVal = val
-                maxArg = i
-            }
-        }
-
-        // Get the associated label
-        let label = labels[maxArg]
-
-        // Compute the probability (softmax value)
-        var sumExp = 0.0
-        for i in 0..<nbClasses {
-            sumExp += exp(Double(truncating: modelOutput[i]))
-        }
-        let proba = exp(Double(truncating: modelOutput[maxArg])) / sumExp
-
-        return (label, proba)
+//        // Get the arg max
+//        let argMax = getArgMax(array: modelOutput)
+//
+//        // Get the associated label
+//        let label = labels[argMax]
+//
+//        // Get the probability
+//        let proba = getProba(array: modelOutput, argMax: argMax)
+//
+//        return (label, proba)
     }
 }
