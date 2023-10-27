@@ -64,19 +64,12 @@ public struct MobileNetV3Package {
     private var logger = Logger()
 
     public init?(computeUnits: MLComputeUnits = MLComputeUnits.all) {
-
-        // Get the URL of the CoreML model
-        guard let url = Bundle.module.url(forResource: "MobileNetV3_MLP_NoQuantization", withExtension: "mlmodelc") else {
-            logger.error("Could not find the CoreML model file")
-            return nil
-        }
-
         // Create the configuration for the CoreML model
         let configuration = MLModelConfiguration()
         configuration.computeUnits = computeUnits
 
         // Load the CoreML model
-        guard let model = try? MobileNetV3_MLP_NoQuantization(contentsOf: url, configuration: configuration) else {
+        guard let model = try? MobileNetV3_MLP_NoQuantization(configuration: configuration) else {
             logger.error("Could not create the CoreML model instance")
             return nil
         }
@@ -84,7 +77,13 @@ public struct MobileNetV3Package {
     }
     
     public func predict(input: UIImage?) -> (label: String?, probability: Double?) {
-        
+
+        // Make sure the model is not nil
+        guard let model = self.model else {
+            logger.error("Model is nil")
+            return (nil, nil)
+        }
+
         // Convert the UIImage into a CGImage
         guard let cgImage = input?.cgImage else {
             logger.error("Could not convert the UIImage into a CGImage")
@@ -98,7 +97,7 @@ public struct MobileNetV3Package {
         }
         
         // Inference
-        guard let modelOutput = try? model!.prediction(input: modelInput).my_output else {
+        guard let modelOutput = try? model.prediction(input: modelInput).my_output else {
             logger.error("Could not process the model's input")
             return (nil, nil)
         }
